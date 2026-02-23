@@ -17,14 +17,14 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install nuitka requests
+        run: pip install "nuitka[onefile]" requests
 
       - name: Build exe
         run: |
           $env:PYTHONPATH = "src"
+          $env:NUITKA_ASSUME_YES_FOR_DOWNLOADS = "1"
           python -m nuitka `
             --mode=onefile `
-            --follow-imports `
             --include-package=mediabackup `
             --include-package=requests `
             --include-package=charset_normalizer `
