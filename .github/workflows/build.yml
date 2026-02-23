@@ -1,0 +1,43 @@
+name: Build Windows exe
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install nuitka requests
+
+      - name: Build exe
+        run: |
+          $env:PYTHONPATH = "src"
+          python -m nuitka `
+            --mode=onefile `
+            --follow-imports `
+            --include-package=mediabackup `
+            --include-package=requests `
+            --include-package=charset_normalizer `
+            --include-package=certifi `
+            --include-package=urllib3 `
+            --include-package=idna `
+            --include-package-data=certifi `
+            --output-dir=dist `
+            --output-filename=mediabackup.exe `
+            src/mediabackup/cli.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mediabackup-windows
+          path: dist/mediabackup.exe
