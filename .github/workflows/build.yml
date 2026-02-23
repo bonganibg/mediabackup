@@ -14,26 +14,17 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install "nuitka[onefile]" requests
+        run: pip install pyinstaller requests
 
       - name: Build exe
         run: |
-          $env:PYTHONPATH = "src"
-          $env:NUITKA_ASSUME_YES_FOR_DOWNLOADS = "1"
-          python -m nuitka `
-            --mode=onefile `
-            --include-package=mediabackup `
-            --include-package=requests `
-            --include-package=charset_normalizer `
-            --include-package=certifi `
-            --include-package=urllib3 `
-            --include-package=idna `
-            --include-package-data=certifi `
-            --output-dir=dist `
-            --output-filename=mediabackup.exe `
+          pyinstaller `
+            --onefile `
+            --name mediabackup `
+            --paths src `
             src/mediabackup/cli.py
 
       - name: Upload artifact

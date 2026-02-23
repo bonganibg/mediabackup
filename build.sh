@@ -1,6 +1,6 @@
 #!/bin/bash
-## Build mediabackup.exe using Nuitka
-## Run from the project root:
+## Build mediabackup.exe using PyInstaller
+## Run from the project root on Windows (Git Bash):
 ##   bash build.sh
 
 set -e
@@ -12,23 +12,15 @@ if [ ! -f "$BUILD_VENV/Scripts/python.exe" ]; then
     echo "Creating build venv..."
     python -m venv "$BUILD_VENV"
     "$BUILD_VENV/Scripts/pip" install --upgrade pip
-    "$BUILD_VENV/Scripts/pip" install nuitka requests
+    "$BUILD_VENV/Scripts/pip" install pyinstaller requests
 fi
 
 echo "Building mediabackup.exe..."
 
-PYTHONPATH=src "$BUILD_VENV/Scripts/python" -m nuitka \
-    --mode=onefile \
-    --follow-imports \
-    --include-package=mediabackup \
-    --include-package=requests \
-    --include-package=charset_normalizer \
-    --include-package=certifi \
-    --include-package=urllib3 \
-    --include-package=idna \
-    --include-package-data=certifi \
-    --output-dir=dist \
-    --output-filename=mediabackup.exe \
+"$BUILD_VENV/Scripts/pyinstaller" \
+    --onefile \
+    --name mediabackup \
+    --paths src \
     src/mediabackup/cli.py
 
 echo ""
