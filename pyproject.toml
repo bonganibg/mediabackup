@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mediabackup"
+version = "0.1.0"
+description = "CLI tool for backing up media files to a remote API"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",
+]
+
+[project.scripts]
+mediabackup = "mediabackup.cli:main"

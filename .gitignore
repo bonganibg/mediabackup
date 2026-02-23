@@ -1,0 +1,24 @@
+# Virtual environments
+venv/
+.build-venv/
+.build-venv-win/
+
+# Build output
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Claude
+.claude/
+
+# Mock server uploads
+mock_uploads/
+
+# Backup state (created at runtime)
+.mediabackup/
+
+# Test content
+content/
